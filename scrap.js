@@ -25,7 +25,10 @@ let scrape = async () => {
     // browser.close();
     // return result;
     const articles = await page.evaluate(() => {
-        let articleArr = document.querySelectorAll('.c-article.FM-P2')
+        let articleArr = Array.from(document.querySelectorAll('.c-article.FM-P2'))
+        articleArr = articleArr.map((element) => {
+            return element.textContent
+        })
 
         return articleArr;
     })
@@ -33,8 +36,7 @@ let scrape = async () => {
     getCodeNum(articles)
 
     function getCodeNum(articles) {
-        articles.forEach(element => {
-            let content = element.textContent
+        articles.forEach((content) => {
             const re = new RegExp('[a-zA-Z0-9]{11}');
             if(re.test(content)) {
                 console.log(content)
